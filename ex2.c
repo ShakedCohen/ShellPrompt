@@ -32,7 +32,7 @@ typedef struct Params_Info {
 
 } Params_Info;
 
-void exctract_params(char all_cmd_line[MAX_LENGTH_OF_COMMAND], Params_Info *params){
+void extract_params(char *all_cmd_line, Params_Info *params){
 
     // cmd_args contains the command name and then the args (array of strings)
     char cmd_args[MAX_AMOUNT_OF_COMMAND_ARGS][MAX_LENGTH_OF_COMMAND];
@@ -103,7 +103,7 @@ int main() {
         strcpy(cmd_copy, all_cmd_line);
 
         Params_Info params;
-        exctract_params(all_cmd_line, &params);
+        extract_params(all_cmd_line, &params);
 
         // exit
         if (strcmp(params.parm_list[0], "/bin/exit") == 0) {

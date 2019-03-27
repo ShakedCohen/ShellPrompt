@@ -109,6 +109,10 @@ int main() {
         if (strcmp(params.parm_list[0], "/bin/exit") == 0) {
             pid_t currPID = getpid();
             printf("%d\n", currPID);
+            int j = 0;
+            for (j = 0; j < process_counter; j++) {
+                kill(jobs_arr[j].pid, SIGTERM);
+            }
             exit(0);
         }
         // cd
@@ -140,7 +144,9 @@ int main() {
                     if (chdir(previous_pwd) == -1) {
                         PRINT_ERROR
                     } else {
+                        printf("%s\n", previous_pwd);
                         UPDATE_PREV_PROCESS_WD
+
                     }
                 } else {
                     //OLDWD not set

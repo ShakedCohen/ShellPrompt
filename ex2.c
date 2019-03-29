@@ -39,16 +39,41 @@ void extract_params(char *all_cmd_line, Params_Info *params){
 
     // break full cmd string into args in order to store at cmd_arg array
     char *token;
-    const char delimiter[2] = " ";
-    //first token
-    token = strtok(all_cmd_line, delimiter);
     int cmd_args_counter = 0;
-    // the rest of the tokens
-    while (token != NULL) {
-        strcpy(cmd_args[cmd_args_counter], token);
-        token = strtok(NULL, delimiter);
-        cmd_args_counter++;
+
+    if (strchr(all_cmd_line, '\"') != NULL) {
+        token = strtok(all_cmd_line, "\"");
+        // split command and append tokens to array arguments
+        while (token != NULL) {
+            strcpy(cmd_args[cmd_args_counter], token);
+            token = strtok(NULL, "\"");
+            cmd_args_counter++;
+        }
+        strcpy(cmd_args[0], "cd");
+
+    } else if (strchr(all_cmd_line, '\'') != NULL) {
+        token = strtok(all_cmd_line, "\'");
+        // split command and append tokens to array arguments
+        while (token != NULL) {
+            strcpy(cmd_args[cmd_args_counter], token);
+            token = strtok(NULL, "\'");
+            cmd_args_counter++;
+        }
+        strcpy(cmd_args[0], "cd");
+    } else {
+        const char delimiter[2] = " ";
+        //first token
+        token = strtok(all_cmd_line, delimiter);
+
+        // the rest of the tokens
+        while (token != NULL) {
+            strcpy(cmd_args[cmd_args_counter], token);
+            token = strtok(NULL, delimiter);
+            cmd_args_counter++;
+        }
     }
+
+
 
     // add /bin/ before every command before send to exec
     char full_cmd[MAX_LENGTH_OF_COMMAND];
